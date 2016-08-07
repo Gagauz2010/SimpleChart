@@ -55,5 +55,10 @@ namespace SimpleChart
         {
             chart.downShift();
         }
+
+        private void panel1_SizeChanged(object sender, System.EventArgs e)
+        {
+            panel1.Refresh();
+        }
     }
 }
