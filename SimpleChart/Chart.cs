@@ -10,11 +10,18 @@ namespace SimpleChart
     /// </summary>
     class Chart
     {
+        #region Parameter
+
         private double step;
         private double OXbegin, OYbegin;
         private Panel panel;
-        private List<double[,]> points;
+        private List<Point> points;
         private Func<Double, Double> myFunc;
+        private Pen gridPen = new Pen(Color.LightGray, 1f);
+        private Pen axisPen = new Pen(ColorTranslator.FromHtml("#363636"), 2);
+        private Pen graphPen = new Pen(Color.BlueViolet, 2);
+
+        #endregion
 
         /// <summary>
         /// Конструктор класса Chart
@@ -55,6 +62,7 @@ namespace SimpleChart
 
         private void drawAxis (object sender, PaintEventArgs e)
         {
+            drawGrid(sender, e);
             drawAxisX(sender, e);
             drawAxisY(sender, e);
         }
@@ -69,6 +77,11 @@ namespace SimpleChart
 
         }
 
+        private void drawGrid(object sender, PaintEventArgs e)
+        {
+
+        }
+
         private void drawGraph (object sender, PaintEventArgs e)
         {
 
@@ -77,20 +90,21 @@ namespace SimpleChart
         #endregion
 
         #region Calculations
-
+        
         private void createPoints()
         {
-            
+            for (int i = 0; i <= panel.Width; i++) 
+                points.Add(coordinateConverter(new[] { i, myFunc(i)}));
         }
 
-        private double[] coordinateConverter (double[] original, bool toPanelCoord = false)
+        private Point coordinateConverter (double[] originalPoint, bool toPanelCoord = false)
         {
-            double[] point;
+            Point point;
 
             if (toPanelCoord)
-                point = new[] { original[0] * step + OXbegin, original[1] * step + OYbegin };
+                point = new Point( originalPoint[0] * step + OXbegin, originalPoint[1] * step + OYbegin );
             else
-                point = new[] { (original[0] - OXbegin) / step, (original[1] - OYbegin) / step };
+                point = new Point((originalPoint[0] - OXbegin) / step, (originalPoint[1] - OYbegin) / step );
 
             return point;
         }
