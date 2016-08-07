@@ -15,7 +15,6 @@ namespace SimpleChart
         private float step, stepPart;
         private float OXbegin, OYbegin;
         private float shiftSpeed = 5;
-        private float xShift = 0, yShift = 0;
         private Panel panel;
         private LinkedList<PointF> points;
         private Func<float, float> myFunc;
@@ -60,13 +59,6 @@ namespace SimpleChart
             drawGraph(sender, e);
         }
 
-        private void onPanelRefresh()
-        {
-            points = new LinkedList<PointF>();
-            createPoints();
-            panel.Refresh();
-        }
-
         private void flipYAxis (object sender, PaintEventArgs e)
         {
             var p = (Panel)sender;
@@ -105,37 +97,24 @@ namespace SimpleChart
                 g.DrawLine(gridPen, 0, i * step + OYbegin, panel.Width, i * step + OYbegin);
         }
 
-        // TODO: fix graph drawning
         private void drawGraph (object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            for (LinkedListNode<PointF> node = points.First; node != points.Last; node = node.Next)
-                g.DrawLine(graphPen, coordinateConverter(new[] { node.Value.X, node.Value.Y }, true), coordinateConverter(new[] { node.Next.Value.X, node.Next.Value.Y }, true));
+            PointF[] line = new PointF[points.Count];
+            points.CopyTo(line, 0);
+            g.DrawCurve(graphPen, line);
         }
 
         #endregion
 
         #region Calculations
         
-        // TODO: fix point generation
         private void createPoints(float xShift = 0, float yShift = 0)
         {
-            for (int i = 0; i <= panel.Width; i++) 
-                points.AddLast(coordinateConverter(new[] { i, myFunc(i)}));
+            for (int i = (int)(-OXbegin / step); i <= (panel.Width-OXbegin) / step; i++) 
+                points.AddLast(new PointF(i * step + OXbegin, myFunc(i) * step + OYbegin));
         }
-
-        private PointF coordinateConverter (float[] originalPoint, bool toPanelCoord = false)
-        {
-            PointF point;
-
-            if (toPanelCoord)
-                point = new PointF(originalPoint[0] * step + OXbegin, originalPoint[1] * step + OYbegin );
-            else
-                point = new PointF((originalPoint[0] - OXbegin) / step, (originalPoint[1] - OYbegin) / step );
-
-            return point;
-        }
-
+        
         #endregion
 
         #region Public draw methods like zoom and shifting axis
@@ -143,31 +122,31 @@ namespace SimpleChart
         public void zoomInOut(int value)
         {
             step = stepPart * value;
-            onPanelRefresh();
+            panel.Refresh();
         }
 
         public void leftShift()
         {
             OXbegin += shiftSpeed;
-            onPanelRefresh();
+            panel.Refresh();
         }
 
         public void rightShift()
         {
             OXbegin -= shiftSpeed;
-            onPanelRefresh();
+            panel.Refresh();
         }
 
         public void upShift()
         {
             OYbegin += shiftSpeed;
-            onPanelRefresh();
+            panel.Refresh();
         }
 
         public void downShift()
         {
             OYbegin -= shiftSpeed;
-            onPanelRefresh();
+            panel.Refresh();
         }
 
         #endregion
