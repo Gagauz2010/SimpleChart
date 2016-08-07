@@ -164,7 +164,7 @@
             this.Controls.Add(this.panel1);
             this.MinimumSize = new System.Drawing.Size(500, 380);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Simple chart analog";
             ((System.ComponentModel.ISupportInitialize)(this.scaleBar)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
