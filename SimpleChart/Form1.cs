@@ -13,9 +13,9 @@ namespace SimpleChart
             chart = new Chart(panel1, myFunc, step: 10, OXbegin: 50, OYbegin: 50);
         }
 
-        double myFunc(double x)
+        float myFunc(float x)
         {
-            return 3 * x + 5;
+            return 3 * x * x + 5 * x + 3;
         }
 
         private void scaleBar_Scroll(object sender, System.EventArgs e)

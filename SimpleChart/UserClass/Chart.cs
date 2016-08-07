@@ -12,11 +12,12 @@ namespace SimpleChart
     {
         #region Parameter
 
-        private double step, stepPart;
-        private double OXbegin, OYbegin;
+        private float step, stepPart;
+        private float OXbegin, OYbegin;
+        private float shiftSpeed = 5;
         private Panel panel;
-        private List<Point> points;
-        private Func<Double, Double> myFunc;
+        private LinkedList<PointF> points;
+        private Func<float, float> myFunc;
         private Pen gridPen = new Pen(Color.LightGray, 1f);
         private Pen axisPen = new Pen(ColorTranslator.FromHtml("#363636"), 2);
         private Pen graphPen = new Pen(Color.BlueViolet, 2);
@@ -31,7 +32,7 @@ namespace SimpleChart
         /// <param name="step">Шаг для единичного отрезка в системе координат Panel. По умолчанию 10</param>
         /// <param name="OXbegin">Отступ для начала оси OX в системе координат Panel. По умолчанию 0</param>
         /// <param name="OYbegin">Отступ для начала оси OY в системе координат Panel. По умолчанию 0</param>
-        public Chart(Panel panel, Func<Double, Double> myFunc, double step = 10, double OXbegin = 0, double OYbegin = 0)
+        public Chart(Panel panel, Func<float, float> myFunc, float step = 10, float OXbegin = 0, float OYbegin = 0)
         {
             this.panel = panel;
             this.step = step;
@@ -48,20 +49,30 @@ namespace SimpleChart
 
         private void updateLayer (object sender, PaintEventArgs e)
         {
+            points = new LinkedList<PointF>();
+            createPoints();
+
             e.Graphics.Clear(panel.BackColor);
+            
             flipYAxis(sender, e);
             drawAxis(sender, e);
             drawGraph(sender, e);
+        }
+
+        private void onPanelRefresh()
+        {
+            points = new LinkedList<PointF>();
+            createPoints();
+            panel.Refresh();
         }
 
         private void flipYAxis (object sender, PaintEventArgs e)
         {
             var p = (Panel)sender;
             e.Graphics.ScaleTransform(1.0F, -1.0F);
-            e.Graphics.TranslateTransform(0.0F, -(float)p.Height);
+            e.Graphics.TranslateTransform(0.0F, -p.Height);
         }
         
-
         private void drawAxis (object sender, PaintEventArgs e)
         {
             drawGrid(sender, e);
@@ -72,13 +83,13 @@ namespace SimpleChart
         private void drawAxisX (object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.DrawLine(axisPen, (float)OXbegin, 0, (float)OXbegin, panel.Height);
+            g.DrawLine(axisPen, OXbegin, 0, OXbegin, panel.Height);
         }
 
         private void drawAxisY (object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-            g.DrawLine(axisPen, 0, (float)OYbegin, panel.Width, (float)OYbegin);
+            g.DrawLine(axisPen, 0, OYbegin, panel.Width, OYbegin);
         }
 
         private void drawGrid(object sender, PaintEventArgs e)
@@ -86,16 +97,18 @@ namespace SimpleChart
             var g = e.Graphics;
             //сетка X
             for (int i = (int)(-OXbegin / step); i <= (int)((panel.Width - OXbegin) / step); i++)
-                g.DrawLine(gridPen, (float)(i * step + OXbegin), 0, (float)(i * step + OXbegin), panel.Height);
+                g.DrawLine(gridPen, i * step + OXbegin, 0, i * step + OXbegin, panel.Height);
 
             //сетка Y
             for (int i = (int)(-OYbegin / step); i <= (int)((panel.Height - OYbegin) / step); i++)
-                g.DrawLine(gridPen, 0, (float)(i * step + OYbegin), panel.Width, (float)(i * step + OYbegin));
+                g.DrawLine(gridPen, 0, i * step + OYbegin, panel.Width, i * step + OYbegin);
         }
 
         private void drawGraph (object sender, PaintEventArgs e)
         {
-            
+            var g = e.Graphics;
+            for (LinkedListNode<PointF> node = points.First; node != points.Last; node = node.Next)
+                g.DrawLine(graphPen, coordinateConverter(new[] { node.Value.X, node.Value.Y }, true), coordinateConverter(new[] { node.Next.Value.X, node.Next.Value.Y }, true));
         }
 
         #endregion
@@ -105,17 +118,17 @@ namespace SimpleChart
         private void createPoints()
         {
             for (int i = 0; i <= panel.Width; i++) 
-                points.Add(coordinateConverter(new[] { i, myFunc(i)}));
+                points.AddLast(coordinateConverter(new[] { i, myFunc(i)}));
         }
 
-        private Point coordinateConverter (double[] originalPoint, bool toPanelCoord = false)
+        private PointF coordinateConverter (float[] originalPoint, bool toPanelCoord = false)
         {
-            Point point;
+            PointF point;
 
             if (toPanelCoord)
-                point = new Point( originalPoint[0] * step + OXbegin, originalPoint[1] * step + OYbegin );
+                point = new PointF(originalPoint[0] * step + OXbegin, originalPoint[1] * step + OYbegin );
             else
-                point = new Point((originalPoint[0] - OXbegin) / step, (originalPoint[1] - OYbegin) / step );
+                point = new PointF((originalPoint[0] - OXbegin) / step, (originalPoint[1] - OYbegin) / step );
 
             return point;
         }
@@ -127,31 +140,31 @@ namespace SimpleChart
         public void zoomInOut(int value)
         {
             step = stepPart * value;
-            panel.Refresh();
+            onPanelRefresh();
         }
 
         public void leftShift()
         {
-            OXbegin += 2;
-            panel.Refresh();
+            OXbegin += shiftSpeed;
+            onPanelRefresh();
         }
 
         public void rightShift()
         {
-            OXbegin -= 2;
-            panel.Refresh();
+            OXbegin -= shiftSpeed;
+            onPanelRefresh();
         }
 
         public void upShift()
         {
-            OYbegin += 2;
-            panel.Refresh();
+            OYbegin += shiftSpeed;
+            onPanelRefresh();
         }
 
         public void downShift()
         {
-            OYbegin -= 2;
-            panel.Refresh();
+            OYbegin -= shiftSpeed;
+            onPanelRefresh();
         }
 
         #endregion
