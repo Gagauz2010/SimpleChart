@@ -79,11 +79,6 @@ namespace SimpleChart
 
         private void drawGrid(object sender, PaintEventArgs e)
         {
-
-        }
-
-        private void drawGraph (object sender, PaintEventArgs e)
-        {
             var g = e.Graphics;
             //сетка X
             for (int i = (int)(-OXbegin / step); i <= (int)((panel.Width - OXbegin) / step); i++)
@@ -92,8 +87,13 @@ namespace SimpleChart
             //сетка Y
             for (int i = (int)(-OYbegin / step); i <= (int)((panel.Height - OYbegin) / step); i++)
                 g.DrawLine(gridPen, 0, (float)(i * step + OYbegin), panel.Width, (float)(i * step + OYbegin));
-            
+
             g.Dispose();
+        }
+
+        private void drawGraph (object sender, PaintEventArgs e)
+        {
+            
         }
 
         #endregion
