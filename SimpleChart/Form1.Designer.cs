@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
+            this.buttonUp = new System.Windows.Forms.Button();
+            this.buttonDown = new System.Windows.Forms.Button();
+            this.buttonLeft = new System.Windows.Forms.Button();
+            this.buttonRight = new System.Windows.Forms.Button();
             this.scaleBar = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.labelScaleValue = new System.Windows.Forms.Label();
@@ -51,49 +51,53 @@
             this.panel1.Size = new System.Drawing.Size(460, 259);
             this.panel1.TabIndex = 0;
             // 
-            // button3
+            // buttonUp
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button3.Location = new System.Drawing.Point(61, 277);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(43, 23);
-            this.button3.TabIndex = 1;
-            this.button3.TabStop = false;
-            this.button3.Text = "Up";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonUp.Location = new System.Drawing.Point(61, 277);
+            this.buttonUp.Name = "buttonUp";
+            this.buttonUp.Size = new System.Drawing.Size(43, 23);
+            this.buttonUp.TabIndex = 1;
+            this.buttonUp.TabStop = false;
+            this.buttonUp.Text = "Up";
+            this.buttonUp.UseVisualStyleBackColor = true;
+            this.buttonUp.Click += new System.EventHandler(this.buttonUp_Click);
             // 
-            // button4
+            // buttonDown
             // 
-            this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button4.Location = new System.Drawing.Point(61, 306);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(43, 23);
-            this.button4.TabIndex = 2;
-            this.button4.TabStop = false;
-            this.button4.Text = "Down";
-            this.button4.UseVisualStyleBackColor = true;
+            this.buttonDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonDown.Location = new System.Drawing.Point(61, 306);
+            this.buttonDown.Name = "buttonDown";
+            this.buttonDown.Size = new System.Drawing.Size(43, 23);
+            this.buttonDown.TabIndex = 2;
+            this.buttonDown.TabStop = false;
+            this.buttonDown.Text = "Down";
+            this.buttonDown.UseVisualStyleBackColor = true;
+            this.buttonDown.Click += new System.EventHandler(this.buttonDown_Click);
             // 
-            // button5
+            // buttonLeft
             // 
-            this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button5.Location = new System.Drawing.Point(12, 293);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(43, 23);
-            this.button5.TabIndex = 1;
-            this.button5.TabStop = false;
-            this.button5.Text = "Left";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonLeft.Location = new System.Drawing.Point(12, 293);
+            this.buttonLeft.Name = "buttonLeft";
+            this.buttonLeft.Size = new System.Drawing.Size(43, 23);
+            this.buttonLeft.TabIndex = 1;
+            this.buttonLeft.TabStop = false;
+            this.buttonLeft.Text = "Left";
+            this.buttonLeft.UseVisualStyleBackColor = true;
+            this.buttonLeft.Click += new System.EventHandler(this.buttonLeft_Click);
             // 
-            // button6
+            // buttonRight
             // 
-            this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button6.Location = new System.Drawing.Point(110, 293);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(43, 23);
-            this.button6.TabIndex = 2;
-            this.button6.TabStop = false;
-            this.button6.Text = "Right";
-            this.button6.UseVisualStyleBackColor = true;
+            this.buttonRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonRight.Location = new System.Drawing.Point(110, 293);
+            this.buttonRight.Name = "buttonRight";
+            this.buttonRight.Size = new System.Drawing.Size(43, 23);
+            this.buttonRight.TabIndex = 2;
+            this.buttonRight.TabStop = false;
+            this.buttonRight.Text = "Right";
+            this.buttonRight.UseVisualStyleBackColor = true;
+            this.buttonRight.Click += new System.EventHandler(this.buttonRight_Click);
             // 
             // scaleBar
             // 
@@ -152,10 +156,10 @@
             this.Controls.Add(this.labelScaleValue);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.scaleBar);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.buttonRight);
+            this.Controls.Add(this.buttonDown);
+            this.Controls.Add(this.buttonLeft);
+            this.Controls.Add(this.buttonUp);
             this.Controls.Add(this.panel1);
             this.MinimumSize = new System.Drawing.Size(500, 380);
             this.Name = "Form1";
@@ -169,11 +173,11 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button buttonDown;
+        private System.Windows.Forms.Button buttonLeft;
+        private System.Windows.Forms.Button buttonRight;
         private System.Windows.Forms.TrackBar scaleBar;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonUp;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelScaleValue;
         private System.Windows.Forms.Button buttonResetScale;
