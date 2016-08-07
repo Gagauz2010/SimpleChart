@@ -22,11 +22,13 @@ namespace SimpleChart
         private void scaleBar_Scroll(object sender, System.EventArgs e)
         {
             labelScaleValue.Text = (scaleBar.Value * 25).ToString() + "%";
+            chart.zoomInOut(scaleBar.Value);
         }
 
         private void scaleBar_ValueChanged(object sender, System.EventArgs e)
         {
             labelScaleValue.Text = (scaleBar.Value * 25).ToString() + "%";
+            chart.zoomInOut(scaleBar.Value);
         }
 
         private void buttonResetScale_Click(object sender, System.EventArgs e)

@@ -12,7 +12,7 @@ namespace SimpleChart
     {
         #region Parameter
 
-        private double step;
+        private double step, stepPart;
         private double OXbegin, OYbegin;
         private Panel panel;
         private List<Point> points;
@@ -38,6 +38,8 @@ namespace SimpleChart
             this.OXbegin = OXbegin;
             this.OYbegin = OYbegin;
             this.myFunc = myFunc;
+
+            stepPart = step / 4;
 
             panel.Paint += updateLayer;
         }
@@ -122,15 +124,9 @@ namespace SimpleChart
 
         #region Public draw methods like zoom and shifting axis
 
-        public void zoomIn()
+        public void zoomInOut(int value)
         {
-            step -= 2;
-            panel.Refresh();
-        }
-
-        public void zoomOut()
-        {
-            step += 2;
+            step = stepPart * value;
             panel.Refresh();
         }
 
