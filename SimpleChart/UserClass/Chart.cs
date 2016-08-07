@@ -15,6 +15,7 @@ namespace SimpleChart
         private float step, stepPart;
         private float OXbegin, OYbegin;
         private float shiftSpeed = 5;
+        private float xShift = 0, yShift = 0;
         private Panel panel;
         private LinkedList<PointF> points;
         private Func<float, float> myFunc;
@@ -104,6 +105,7 @@ namespace SimpleChart
                 g.DrawLine(gridPen, 0, i * step + OYbegin, panel.Width, i * step + OYbegin);
         }
 
+        // TODO: fix graph drawning
         private void drawGraph (object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
@@ -115,7 +117,8 @@ namespace SimpleChart
 
         #region Calculations
         
-        private void createPoints()
+        // TODO: fix point generation
+        private void createPoints(float xShift = 0, float yShift = 0)
         {
             for (int i = 0; i <= panel.Width; i++) 
                 points.AddLast(coordinateConverter(new[] { i, myFunc(i)}));

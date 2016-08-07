@@ -15,7 +15,7 @@ namespace SimpleChart
 
         float myFunc(float x)
         {
-            return 3 * x * x + 5 * x + 3;
+            return x * x;
         }
 
         private void scaleBar_Scroll(object sender, System.EventArgs e)
